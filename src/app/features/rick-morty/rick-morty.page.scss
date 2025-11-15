@@ -77,7 +77,6 @@
         pointer-events: none;
         transition: 0.2s ease all;
         padding: 0 4px;
-        // background: var(--form-bg);
       }
 
       input:focus + label,
@@ -108,7 +107,6 @@
     }
   }
 
-  /* ------------------------------ */
   /* PAGINACIÓN */
   .pagination {
     display: flex;

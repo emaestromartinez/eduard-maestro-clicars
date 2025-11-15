@@ -7,7 +7,6 @@ export class ThemeService {
   constructor() {
     this.initTheme();
 
-    // efecto para actualizar body automáticamente
     effect(() => {
       if (this.darkMode()) {
         document.body.classList.add('dark');

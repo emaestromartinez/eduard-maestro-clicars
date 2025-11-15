@@ -3,14 +3,8 @@ import { RickMortyPage } from './rick-morty.page';
 import { RickMortyService } from './rick-morty.service';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  RMCharacter,
-  RMCharacterResponse,
-  RMCharacterStatus,
-  RMCharacterLocation,
-} from './rick-morty.model';
+import { RMCharacter, RMCharacterResponse, RMCharacterStatus } from './rick-morty.model';
 import { CharacterCardComponent } from './components/character-card/character-card.component';
-import { Signal } from '@angular/core';
 
 describe('RickMortyPage', () => {
   let component: RickMortyPage;
@@ -130,7 +124,6 @@ describe('RickMortyPage', () => {
   });
 
   it('should fetch characters from service', (done) => {
-    // characters es una señal
     const chars = component.characters?.();
     expect(chars).toBeTruthy();
     expect(chars!.length).toBeGreaterThan(0);

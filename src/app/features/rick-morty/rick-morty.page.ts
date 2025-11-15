@@ -21,9 +21,6 @@ import { CharacterCardComponent } from './components/character-card/character-ca
   styleUrls: ['./rick-morty.page.scss'],
 })
 export class RickMortyPage {
-  // ------------------------------
-  // Signals de estado
-  // ------------------------------
   apiPage = signal(1);
   subPage = signal(1);
   filters = signal<Record<string, string | null>>({});
@@ -35,9 +32,6 @@ export class RickMortyPage {
   readonly chunkSize = 5;
   readonly itemsPerApiPage = 20;
 
-  // ------------------------------
-  // Reactive Form
-  // ------------------------------
   filterForm: FormGroup;
 
   statusOptions = Object.values(RMCharacterStatus);
@@ -47,14 +41,12 @@ export class RickMortyPage {
     private svc: RickMortyService,
     private fb: FormBuilder,
   ) {
-    // Crear el FormGroup
     this.filterForm = this.fb.group({
       name: [''],
       status: [''],
       gender: [''],
     });
 
-    // Restaurar filtros desde sessionStorage
     const savedFilters = sessionStorage.getItem('rmFilters');
     if (savedFilters) {
       const parsed = JSON.parse(savedFilters);
@@ -62,34 +54,25 @@ export class RickMortyPage {
       this.filterForm.patchValue(parsed);
     }
 
-    // Guardar cambios de filtros automáticamente
     effect(() => {
       sessionStorage.setItem('rmFilters', JSON.stringify(this.filters()));
     });
 
-    // Restaurar paginación desde sessionStorage
     const savedApiPage = sessionStorage.getItem('apiPage');
     const savedSubPage = sessionStorage.getItem('subPage');
     if (savedApiPage) this.apiPage.set(Number(savedApiPage));
     if (savedSubPage) this.subPage.set(Number(savedSubPage));
 
-    // Guardar cambios de paginación en sessionStorage
     effect(() => {
       sessionStorage.setItem('apiPage', this.apiPage().toString());
       sessionStorage.setItem('subPage', this.subPage().toString());
     });
   }
 
-  // ------------------------------
-  // Observables para combinar
-  // ------------------------------
   private apiPage$ = toObservable(this.apiPage);
   private subPage$ = toObservable(this.subPage);
   private filters$ = toObservable(this.filters);
 
-  // ------------------------------
-  // Stream principal: personajes
-  // ------------------------------
   private charactersStream$ = combineLatest([this.apiPage$, this.subPage$, this.filters$]).pipe(
     tap(() => {
       this.loading.set(true);
@@ -117,16 +100,10 @@ export class RickMortyPage {
 
   characters = toSignal<RMCharacter[]>(this.charactersStream$, { requireSync: false });
 
-  // ------------------------------
-  // Página global
-  // ------------------------------
   globalPage = computed(() => {
     return (this.apiPage() - 1) * (this.itemsPerApiPage / this.chunkSize) + this.subPage();
   });
 
-  // ------------------------------
-  // Paginación
-  // ------------------------------
   nextPage() {
     const nextSubPage = this.subPage() + 1;
     const maxSubPage = this.itemsPerApiPage / this.chunkSize;
@@ -151,9 +128,6 @@ export class RickMortyPage {
     }
   }
 
-  // ------------------------------
-  // Aplicar filtros desde el Reactive Form
-  // ------------------------------
   applyFilters() {
     const f: Record<string, string | null> = this.filterForm.value;
     this.filters.set(f);
