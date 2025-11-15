@@ -1,17 +1,42 @@
-export type RMCharacter = {
+// rick-morty.model.ts
+
+export interface RMInfo {
+  count: number;
+  pages: number;
+  next: string | null;
+  prev: string | null;
+}
+
+export interface RMCharacterLocation {
+  name: string;
+  url: string;
+}
+
+export enum RMCharacterStatus {
+  Alive = 'Alive',
+  Dead = 'Dead',
+  Unknown = 'unknown',
+}
+
+export interface RMCharacter {
   id: number;
   name: string;
-  status: CharacterStatus;
+  status: RMCharacterStatus;
   species: string;
   type: string;
   gender: string;
-  origin: { name: string; url: string };
-  location: { name: string; url: string };
+  origin: RMCharacterLocation;
+  location: RMCharacterLocation;
   image: string;
   episode: string[];
   url: string;
   created: string;
-};
+}
+
+export interface RMCharacterResponse {
+  info: RMInfo;
+  results: RMCharacter[];
+}
 
 /* Enum para el estado del personaje */
 export enum CharacterStatus {
