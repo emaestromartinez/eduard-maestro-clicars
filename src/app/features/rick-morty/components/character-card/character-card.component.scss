@@ -46,17 +46,11 @@
 .card__origin {
   margin: 0;
   font-size: 0.8rem;
-  color: #555;
+  color: var(--card-text);
 }
 
 .card__info-block {
   display: flex;
   flex-direction: column; // apila label y valor verticalmente
   margin: 0.1rem 0;
-}
-
-.card__value {
-  font-size: 0.8rem;
-  color: #555;
-  font-weight: 500;
 }

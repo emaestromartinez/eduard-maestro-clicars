@@ -1,4 +1,4 @@
-<main class="page">
+<main class="page" [class.dark]="theme.darkMode()">
   <div *ngIf="loading(); else content" class="center-message">Cargando…</div>
 
   <ng-template #content>

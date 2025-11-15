@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ThemeService } from '../../theme/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -8,4 +9,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss'],
 })
-export class AppHeaderComponent {}
+export class AppHeaderComponent {
+  constructor(public theme: ThemeService) {}
+
+  toggleDarkMode() {
+    this.theme.toggleDarkMode();
+  }
+}

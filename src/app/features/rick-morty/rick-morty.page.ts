@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RickMortyService } from './rick-morty.service';
 import { CharacterCardComponent } from './components/character-card/character-card.component';
 import { RMCharacter } from './rick-morty.model';
+import { ThemeService } from '../../shared/theme/theme.service';
 
 @Component({
   selector: 'app-rick-morty-page',
@@ -16,7 +17,10 @@ export class RickMortyPage {
   characters = signal<RMCharacter[]>([]);
   error = signal<string | null>(null);
 
-  constructor(private svc: RickMortyService) {
+  constructor(
+    private svc: RickMortyService,
+    public theme: ThemeService,
+  ) {
     this.loadCharacters();
   }
 

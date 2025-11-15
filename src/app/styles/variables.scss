@@ -1,5 +1,8 @@
+/* --- Modo claro --- */
 :root {
+  /* Page */
   --background: #f7f8fb;
+  --page-text: #555;
 
   /* Header */
   --header-bg: #fff;
@@ -19,8 +22,11 @@
   --toggle-shadow: rgba(0, 0, 0, 0.15);
 }
 
+/* --- Modo oscuro --- */
 .dark {
+  /* Page */
   --background: #121212;
+  --page-text: #ddd;
 
   /* Header */
   --header-bg: #1e1e1e;

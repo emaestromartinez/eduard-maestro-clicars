@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, effect } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
@@ -6,13 +6,20 @@ export class ThemeService {
 
   constructor() {
     this.initTheme();
+
+    // efecto para actualizar body automáticamente
+    effect(() => {
+      if (this.darkMode()) {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
+    });
   }
 
   toggleDarkMode() {
-    const newValue = !this.darkMode();
-    this.darkMode.set(newValue);
-    document.body.classList.toggle('dark', newValue);
-    localStorage.setItem('darkMode', JSON.stringify(newValue));
+    this.darkMode.set(!this.darkMode());
+    localStorage.setItem('darkMode', JSON.stringify(this.darkMode()));
   }
 
   initTheme() {
@@ -23,6 +30,5 @@ export class ThemeService {
         : window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     this.darkMode.set(isDark);
-    document.body.classList.toggle('dark', isDark);
   }
 }

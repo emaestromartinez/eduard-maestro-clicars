@@ -1,13 +1,38 @@
 .header {
-  width: 100%;
   padding: 1rem 2rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  background: #fff;
-  color: #555;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background: var(--header-bg);
+  color: var(--header-text);
+  box-shadow: 0 2px 6px var(--header-shadow);
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+.header__title {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.header__toggle {
+  padding: 0.4rem 0.8rem;
+  border: 2px solid var(--toggle-border);
+  border-radius: 8px;
+  background: var(--toggle-bg);
+  color: var(--toggle-text);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.header__toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px var(--toggle-shadow);
+}
+
+.header__toggle:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px var(--toggle-shadow);
 }
