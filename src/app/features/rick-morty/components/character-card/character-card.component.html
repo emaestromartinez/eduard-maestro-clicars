@@ -1,20 +1,28 @@
-<article class="card" [attr.aria-labelledby]="'name-' + character.id">
+<div class="card">
   <img class="card__img" [src]="character.image" [alt]="character.name" />
 
   <div class="card__content">
-    <h3 id="name-{{ character.id }}" class="card__name">{{ character.name }}</h3>
-    <p class="card__status"><strong>Status:</strong> {{ character.status }}</p>
+    <h2 class="card__name">{{ character.name }}</h2>
 
-    <!-- Last Known Location -->
+    <!-- Status -->
+    <div class="card__info-status">
+      <span
+        class="card__status-indicator"
+        [style.background-color]="STATUS_COLOR[character.status]"
+        title="{{ character.status }}"
+      ></span>
+      {{ character.status }} - {{ character.species }}
+    </div>
+
+    <!-- Location -->
     <div class="card__info-block">
-      <span class="card__label">Last Known Location:</span>
+      <span class="card__label">Last Known Location</span>
       <span class="card__value">{{ character.location.name }}</span>
     </div>
 
-    <!-- First Seen In -->
     <div class="card__info-block">
-      <span class="card__label">First Seen In:</span>
+      <span class="card__label">First Seen In</span>
       <span class="card__value">{{ character.origin.name }}</span>
     </div>
   </div>
-</article>
+</div>

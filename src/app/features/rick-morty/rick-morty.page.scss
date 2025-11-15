@@ -8,6 +8,9 @@
   color: var(--page-text);
 }
 
+/* -----------------------
+   Nueva grid con Flexbox
+   ----------------------- */
 .grid-wrapper {
   width: 100%;
   display: flex;
@@ -15,11 +18,16 @@
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  max-width: 800px;
-  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* centra las filas */
+  gap: 1rem; /* separación entre cards */
+}
+
+.grid > .card {
+  flex: 1 1 200px; /* crecer, encoger, mínimo 200px */
+  max-width: 300px; /* opcional: no dejar que las cards crezcan demasiado */
+  min-width: 150px; /* opcional: ancho mínimo absoluto */
 }
 
 .center-message {
