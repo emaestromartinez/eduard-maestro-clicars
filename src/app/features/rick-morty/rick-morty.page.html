@@ -1,12 +1,14 @@
 <main class="page" [class.dark]="theme.darkMode()">
-  <div *ngIf="loading(); else content" class="center-message">Cargando…</div>
+  <div *ngIf="loading(); else content" class="page__message">Cargando…</div>
 
   <ng-template #content>
-    <div *ngIf="error(); else gridBlock" class="center-message error">{{ error() }}</div>
+    <div *ngIf="error(); else gridBlock" class="page__message page__message--error">
+      {{ error() }}
+    </div>
 
     <ng-template #gridBlock>
-      <section class="grid-wrapper">
-        <div class="grid">
+      <section class="page__grid-wrapper">
+        <div class="page__grid">
           <app-character-card *ngFor="let c of characters()" [character]="c"></app-character-card>
         </div>
       </section>

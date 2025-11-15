@@ -9,30 +9,32 @@
   position: sticky;
   top: 0;
   z-index: 100;
-}
 
-.header__title {
-  margin: 0;
-  font-size: 1.2rem;
-}
+  &__title {
+    margin: 0;
+    font-size: 1.2rem;
+  }
 
-.header__toggle {
-  padding: 0.4rem 0.8rem;
-  border: 2px solid var(--toggle-border);
-  border-radius: 8px;
-  background: var(--toggle-bg);
-  color: var(--toggle-text);
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s ease-in-out;
-}
+  &__toggle {
+    padding: 0.4rem 0.8rem;
+    border: 2px solid var(--toggle-border);
+    border-radius: 8px;
+    background: var(--toggle-bg);
+    color: var(--toggle-text);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition:
+      transform 0.2s ease-in-out,
+      box-shadow 0.2s ease-in-out;
 
-.header__toggle:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 10px var(--toggle-shadow);
-}
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 10px var(--toggle-shadow);
+    }
 
-.header__toggle:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px var(--toggle-shadow);
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px var(--toggle-shadow);
+    }
+  }
 }

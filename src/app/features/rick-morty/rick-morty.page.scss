@@ -6,32 +6,33 @@
   background: var(--background);
   min-height: 100vh;
   color: var(--page-text);
-}
 
-/* -----------------------
-   Nueva grid con Flexbox
-   ----------------------- */
-.grid-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
+  &__grid-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* centra las filas */
-  gap: 1rem; /* separación entre cards */
-}
+  &__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
 
-.grid > .card {
-  flex: 1 1 200px; /* crecer, encoger, mínimo 200px */
-  max-width: 300px; /* opcional: no dejar que las cards crezcan demasiado */
-  min-width: 150px; /* opcional: ancho mínimo absoluto */
-}
+    > .card {
+      flex: 1 1 200px; /* crecer, encoger, mínimo 200px */
+      max-width: 300px; /* ancho máximo */
+      min-width: 150px; /* ancho mínimo absoluto */
+    }
+  }
 
-.center-message {
-  text-align: center;
-  font-size: 1rem;
-  color: var(--card-text);
+  &__message {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--card-text);
+
+    &--error {
+      color: var(--error-color); /* opcional: estilo diferente para errores */
+    }
+  }
 }
