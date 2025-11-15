@@ -1,0 +1,15 @@
+<main class="page">
+  <div *ngIf="loading(); else content" class="center-message">Cargando…</div>
+
+  <ng-template #content>
+    <div *ngIf="error(); else gridBlock" class="center-message error">{{ error() }}</div>
+
+    <ng-template #gridBlock>
+      <section class="grid-wrapper">
+        <div class="grid">
+          <app-character-card *ngFor="let c of characters()" [character]="c"></app-character-card>
+        </div>
+      </section>
+    </ng-template>
+  </ng-template>
+</main>

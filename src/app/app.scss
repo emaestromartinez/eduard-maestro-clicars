@@ -1,0 +1,18 @@
+:root {
+  /* Tema claro */
+  --background: #f7f8fb;
+  --card-bg: #fff;
+  --card-text: #555;
+  --card-label: #888;
+  --card-shadow: rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121212;
+    --card-bg: #1e1e1e;
+    --card-text: #ddd;
+    --card-label: #aaa;
+    --card-shadow: rgba(0, 0, 0, 0.5);
+  }
+}
