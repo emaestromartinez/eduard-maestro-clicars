@@ -5,7 +5,7 @@ describe('ThemeService', () => {
   let service: ThemeService;
 
   beforeEach(() => {
-    localStorage.clear();
+    sessionStorage.clear();
     document.body.className = '';
     TestBed.configureTestingModule({});
     service = TestBed.inject(ThemeService);
@@ -15,14 +15,14 @@ describe('ThemeService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should initialize darkMode from localStorage', () => {
-    localStorage.setItem('darkMode', 'true');
+  it('should initialize darkMode from sessionStorage', () => {
+    sessionStorage.setItem('darkMode', 'true');
     const newService = TestBed.inject(ThemeService);
 
     expect(newService.darkMode()).toBeTrue();
   });
 
-  it('should initialize darkMode from prefers-color-scheme if localStorage empty', () => {
+  it('should initialize darkMode from prefers-color-scheme if sessionStorage empty', () => {
     spyOn(window, 'matchMedia').and.returnValue({
       matches: true,
       addListener: () => {},
@@ -33,14 +33,14 @@ describe('ThemeService', () => {
     expect(newService.darkMode()).toBeTrue();
   });
 
-  it('toggleDarkMode should invert darkMode and save to localStorage', () => {
+  it('toggleDarkMode should invert darkMode and save to sessionStorage', () => {
     service.darkMode.set(false);
     service.toggleDarkMode();
     expect(service.darkMode()).toBeTrue();
-    expect(JSON.parse(localStorage.getItem('darkMode')!)).toBeTrue();
+    expect(JSON.parse(sessionStorage.getItem('darkMode')!)).toBeTrue();
 
     service.toggleDarkMode();
     expect(service.darkMode()).toBeFalse();
-    expect(JSON.parse(localStorage.getItem('darkMode')!)).toBeFalse();
+    expect(JSON.parse(sessionStorage.getItem('darkMode')!)).toBeFalse();
   });
 });

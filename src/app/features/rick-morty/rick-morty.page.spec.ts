@@ -71,7 +71,7 @@ describe('RickMortyPage', () => {
 
   afterEach(() => {
     sessionStorage.clear();
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   it('should create the component', () => {
@@ -84,9 +84,9 @@ describe('RickMortyPage', () => {
     expect(newComp.filters()).toEqual({ name: 'Rick' });
   });
 
-  it('should restore pagination from localStorage', () => {
-    localStorage.setItem('apiPage', '3');
-    localStorage.setItem('subPage', '2');
+  it('should restore pagination from sessionStorage', () => {
+    sessionStorage.setItem('apiPage', '3');
+    sessionStorage.setItem('subPage', '2');
     const newComp = TestBed.createComponent(RickMortyPage).componentInstance;
     expect(newComp.apiPage()).toBe(3);
     expect(newComp.subPage()).toBe(2);

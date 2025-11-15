@@ -19,11 +19,11 @@ export class ThemeService {
 
   toggleDarkMode() {
     this.darkMode.set(!this.darkMode());
-    localStorage.setItem('darkMode', JSON.stringify(this.darkMode()));
+    sessionStorage.setItem('darkMode', JSON.stringify(this.darkMode()));
   }
 
   initTheme() {
-    const saved = localStorage.getItem('darkMode');
+    const saved = sessionStorage.getItem('darkMode');
     const isDark =
       saved !== null
         ? JSON.parse(saved)

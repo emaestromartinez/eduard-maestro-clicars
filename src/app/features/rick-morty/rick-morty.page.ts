@@ -67,16 +67,16 @@ export class RickMortyPage {
       sessionStorage.setItem('rmFilters', JSON.stringify(this.filters()));
     });
 
-    // Restaurar paginación desde localStorage
-    const savedApiPage = localStorage.getItem('apiPage');
-    const savedSubPage = localStorage.getItem('subPage');
+    // Restaurar paginación desde sessionStorage
+    const savedApiPage = sessionStorage.getItem('apiPage');
+    const savedSubPage = sessionStorage.getItem('subPage');
     if (savedApiPage) this.apiPage.set(Number(savedApiPage));
     if (savedSubPage) this.subPage.set(Number(savedSubPage));
 
-    // Guardar cambios de paginación en localStorage
+    // Guardar cambios de paginación en sessionStorage
     effect(() => {
-      localStorage.setItem('apiPage', this.apiPage().toString());
-      localStorage.setItem('subPage', this.subPage().toString());
+      sessionStorage.setItem('apiPage', this.apiPage().toString());
+      sessionStorage.setItem('subPage', this.subPage().toString());
     });
   }
 
