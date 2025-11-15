@@ -18,11 +18,41 @@
       <!-- PAGINACIÓN -->
       <div class="pagination">
         <button (click)="prevPage()" [disabled]="globalPage() === 1">Anterior</button>
-
         <span>Página {{ globalPage() }} de {{ totalChunks() }}</span>
-
         <button (click)="nextPage()" [disabled]="globalPage() === totalChunks()">Siguiente</button>
       </div>
     </ng-template>
   </ng-template>
+
+  <div class="page">
+    <!-- FILTROS -->
+    <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="page__filters">
+      <div class="page__filters-group">
+        <input id="name" type="text" formControlName="name" placeholder=" " />
+        <label for="name">Nombre del personaje</label>
+      </div>
+
+      <div class="page__filters-group">
+        <select id="status" formControlName="status">
+          <option value="">Todos</option>
+          <option *ngFor="let status of statusOptions" [value]="status">
+            {{ status | titlecase }}
+          </option>
+        </select>
+        <label for="status">Estado</label>
+      </div>
+
+      <div class="page__filters-group">
+        <select id="gender" formControlName="gender">
+          <option value="">Todos</option>
+          <option *ngFor="let gender of genderOptions" [value]="gender">
+            {{ gender | titlecase }}
+          </option>
+        </select>
+        <label for="gender">Género</label>
+      </div>
+
+      <button type="submit" class="page__filters__submit">Filtrar</button>
+    </form>
+  </div>
 </main>

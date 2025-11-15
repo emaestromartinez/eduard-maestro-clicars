@@ -1,16 +1,22 @@
 import { Component, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { switchMap, tap, map, catchError } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
-import { RMCharacter, RMCharacterResponse } from './rick-morty.model';
+import { switchMap, tap, map, catchError } from 'rxjs/operators';
+import {
+  RMCharacter,
+  RMCharacterGender,
+  RMCharacterResponse,
+  RMCharacterStatus,
+} from './rick-morty.model';
 import { RickMortyService } from './rick-morty.service';
 import { CharacterCardComponent } from './components/character-card/character-card.component';
 
 @Component({
   selector: 'app-page',
   standalone: true,
-  imports: [CommonModule, CharacterCardComponent],
+  imports: [CommonModule, ReactiveFormsModule, CharacterCardComponent],
   templateUrl: './rick-morty.page.html',
   styleUrls: ['./rick-morty.page.scss'],
 })
@@ -18,51 +24,71 @@ export class RickMortyPage {
   // ------------------------------
   // Signals de estado
   // ------------------------------
-  apiPage = signal(1); // Página de la API (20 items)
-  subPage = signal(1); // Subpágina interna (5 items)
+  apiPage = signal(1);
+  subPage = signal(1);
   filters = signal<Record<string, string | null>>({});
 
   loading = signal(false);
   error = signal<string | null>(null);
-  totalChunks = signal(1); // Total de subpáginas (5 en 5)
-  readonly chunkSize = 5; // 5 por subpágina
-  readonly itemsPerApiPage = 20; // Items que devuelve la API por página
+  totalChunks = signal(1);
 
-  constructor(private svc: RickMortyService) {
-    // ------------------------------
-    // Restaurar desde localStorage si existen valores guardados
-    // ------------------------------
+  readonly chunkSize = 5;
+  readonly itemsPerApiPage = 20;
+
+  // ------------------------------
+  // Reactive Form
+  // ------------------------------
+  filterForm: FormGroup;
+
+  statusOptions = Object.values(RMCharacterStatus);
+  genderOptions = Object.values(RMCharacterGender);
+
+  constructor(
+    private svc: RickMortyService,
+    private fb: FormBuilder,
+  ) {
+    // Crear el FormGroup
+    this.filterForm = this.fb.group({
+      name: [''],
+      status: [''],
+      gender: [''],
+    });
+
+    // Restaurar filtros desde sessionStorage
+    const savedFilters = sessionStorage.getItem('rmFilters');
+    if (savedFilters) {
+      const parsed = JSON.parse(savedFilters);
+      this.filters.set(parsed);
+      this.filterForm.patchValue(parsed);
+    }
+
+    // Guardar cambios de filtros automáticamente
+    effect(() => {
+      sessionStorage.setItem('rmFilters', JSON.stringify(this.filters()));
+    });
+
+    // Restaurar paginación desde localStorage
     const savedApiPage = localStorage.getItem('apiPage');
     const savedSubPage = localStorage.getItem('subPage');
-    const savedFilters = localStorage.getItem('filters');
-
     if (savedApiPage) this.apiPage.set(Number(savedApiPage));
     if (savedSubPage) this.subPage.set(Number(savedSubPage));
-    if (savedFilters) this.filters.set(JSON.parse(savedFilters));
 
-    // ------------------------------
-    // Guardar automáticamente los cambios en localStorage
-    // ------------------------------
+    // Guardar cambios de paginación en localStorage
     effect(() => {
-      const apiPageVal = this.apiPage();
-      const subPageVal = this.subPage();
-      const filtersVal = this.filters();
-
-      localStorage.setItem('apiPage', apiPageVal.toString());
-      localStorage.setItem('subPage', subPageVal.toString());
-      localStorage.setItem('filters', JSON.stringify(filtersVal));
+      localStorage.setItem('apiPage', this.apiPage().toString());
+      localStorage.setItem('subPage', this.subPage().toString());
     });
   }
 
   // ------------------------------
-  // Conversión a observables
+  // Observables para combinar
   // ------------------------------
   private apiPage$ = toObservable(this.apiPage);
   private subPage$ = toObservable(this.subPage);
   private filters$ = toObservable(this.filters);
 
   // ------------------------------
-  // STREAM PRINCIPAL
+  // Stream principal: personajes
   // ------------------------------
   private charactersStream$ = combineLatest([this.apiPage$, this.subPage$, this.filters$]).pipe(
     tap(() => {
@@ -72,13 +98,10 @@ export class RickMortyPage {
     switchMap(([apiPage, subPage, filters]) =>
       this.svc.getCharacters(apiPage, filters).pipe(
         tap((res: RMCharacterResponse) => {
-          // Calculamos el total de subpáginas globales
           this.totalChunks.set(Math.ceil(res.info.count / this.chunkSize));
         }),
         map((res: RMCharacterResponse) => {
-          // Índice global de inicio
           const globalIndex = (subPage - 1) * this.chunkSize;
-          // Índice relativo a la página de la API
           const startInApiPage = globalIndex % res.results.length;
           return res.results.slice(startInApiPage, startInApiPage + this.chunkSize);
         }),
@@ -95,14 +118,14 @@ export class RickMortyPage {
   characters = toSignal<RMCharacter[]>(this.charactersStream$, { requireSync: false });
 
   // ------------------------------
-  // PÁGINA GLOBAL
+  // Página global
   // ------------------------------
   globalPage = computed(() => {
     return (this.apiPage() - 1) * (this.itemsPerApiPage / this.chunkSize) + this.subPage();
   });
 
   // ------------------------------
-  // PAGINACIÓN
+  // Paginación
   // ------------------------------
   nextPage() {
     const nextSubPage = this.subPage() + 1;
@@ -128,7 +151,11 @@ export class RickMortyPage {
     }
   }
 
-  applyFilters(f: Record<string, string | null>) {
+  // ------------------------------
+  // Aplicar filtros desde el Reactive Form
+  // ------------------------------
+  applyFilters() {
+    const f: Record<string, string | null> = this.filterForm.value;
     this.filters.set(f);
     this.apiPage.set(1);
     this.subPage.set(1);

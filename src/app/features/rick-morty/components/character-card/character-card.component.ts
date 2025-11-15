@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RMCharacter, CharacterStatus, STATUS_COLOR } from '../../rick-morty.model';
+import { RMCharacter, RMCharacterStatus, STATUS_COLOR } from '../../rick-morty.model';
 
 @Component({
   selector: 'app-character-card',
@@ -10,6 +10,6 @@ import { RMCharacter, CharacterStatus, STATUS_COLOR } from '../../rick-morty.mod
 export class CharacterCardComponent {
   @Input() character!: RMCharacter;
 
-  CharacterStatus = CharacterStatus; // para usar en el template
+  CharacterStatus = RMCharacterStatus; // para usar en el template
   STATUS_COLOR = STATUS_COLOR;
 }

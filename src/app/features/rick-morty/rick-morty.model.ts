@@ -1,5 +1,3 @@
-// rick-morty.model.ts
-
 export interface RMInfo {
   count: number;
   pages: number;
@@ -10,12 +8,6 @@ export interface RMInfo {
 export interface RMCharacterLocation {
   name: string;
   url: string;
-}
-
-export enum RMCharacterStatus {
-  Alive = 'Alive',
-  Dead = 'Dead',
-  Unknown = 'unknown',
 }
 
 export interface RMCharacter {
@@ -38,16 +30,21 @@ export interface RMCharacterResponse {
   results: RMCharacter[];
 }
 
-/* Enum para el estado del personaje */
-export enum CharacterStatus {
+export enum RMCharacterGender {
+  Female = 'female',
+  Male = 'male',
+  Genderless = 'genderless',
+  Unknown = 'unknown',
+}
+
+export enum RMCharacterStatus {
   Alive = 'Alive',
   Dead = 'Dead',
   Unknown = 'unknown',
 }
 
-/* Función de ayuda para obtener color según status */
-export const STATUS_COLOR: Record<CharacterStatus, string> = {
-  [CharacterStatus.Alive]: '#55cc44',
-  [CharacterStatus.Dead]: '#d63d2e',
-  [CharacterStatus.Unknown]: '#9e9e9e',
+export const STATUS_COLOR: Record<RMCharacterStatus, string> = {
+  [RMCharacterStatus.Alive]: '#55cc44',
+  [RMCharacterStatus.Dead]: '#d63d2e',
+  [RMCharacterStatus.Unknown]: '#9e9e9e',
 };

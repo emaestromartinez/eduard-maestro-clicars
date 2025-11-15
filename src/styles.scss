@@ -67,6 +67,30 @@ body {
   --toggle-text: #555;
   --toggle-border: #ccc;
   --toggle-shadow: rgba(0, 0, 0, 0.15);
+
+  /* Input */
+  --input-bg: #fff;
+  --input-text: #555;
+  --input-border: #ccc;
+  --input-shadow: rgba(0, 0, 0, 0.15);
+
+  /* Formulario */
+  --form-bg: #ffffff;
+  --form-text: #222222;
+  --form-label: #888888;
+  --form-border: #ccc;
+  --form-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Input */
+  --input-bg: #ffffff;
+  --input-text: #222222;
+  --input-border: #ccc;
+  --input-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Botones */
+  --btn-primary-bg: #5c6ac4;
+  --btn-primary-hover: #4b57a1;
+  --btn-primary-text: #ffffff;
 }
 
 /* --- Modo oscuro --- */
@@ -91,4 +115,22 @@ body {
   --toggle-text: #ddd;
   --toggle-border: #444;
   --toggle-shadow: rgba(0, 0, 0, 0.5);
+
+  /* Formulario */
+  --form-bg: #1e1e1e;
+  --form-text: #ddd;
+  --form-label: #aaa;
+  --form-border: #444;
+  --form-shadow: rgba(0, 0, 0, 0.5);
+
+  /* Input */
+  --input-bg: #2c2c2c;
+  --input-text: #ddd;
+  --input-border: #444;
+  --input-shadow: rgba(0, 0, 0, 0.5);
+
+  /* Botones */
+  --btn-primary-bg: #5c6ac4;
+  --btn-primary-hover: #4b57a1;
+  --btn-primary-text: #fff;
 }
