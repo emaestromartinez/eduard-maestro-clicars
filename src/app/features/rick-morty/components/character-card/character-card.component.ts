@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RMCharacter, RMCharacterStatus, STATUS_COLOR } from '../../rick-morty.model';
+import { RMCharacterStatus, RMCharacterWithEpisode, STATUS_COLOR } from '../../rick-morty.model';
 
 @Component({
   selector: 'app-character-card',
@@ -8,7 +8,7 @@ import { RMCharacter, RMCharacterStatus, STATUS_COLOR } from '../../rick-morty.m
   styleUrls: ['./character-card.component.scss'],
 })
 export class CharacterCardComponent {
-  @Input() character!: RMCharacter;
+  @Input() character!: RMCharacterWithEpisode;
 
   CharacterStatus = RMCharacterStatus; // para usar en el template
   STATUS_COLOR = STATUS_COLOR;

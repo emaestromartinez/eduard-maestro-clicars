@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { RMCharacter, RMCharacterResponse } from './rick-morty.model';
+import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { RMCharacterResponse, RMCharacterWithEpisode } from './rick-morty.model';
 
 @Injectable({ providedIn: 'root' })
 export class RickMortyService {
   private BASE_URL = 'https://rickandmortyapi.com/api/character';
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getCharacters(
-    page: number = 1,
+    page = 1,
     filters?: Record<string, string | null>,
-  ): Observable<RMCharacterResponse> {
+  ): Observable<RMCharacterResponse & { results: RMCharacterWithEpisode[] }> {
     let params = new HttpParams().set('page', page.toString());
 
     if (filters) {
@@ -21,6 +21,32 @@ export class RickMortyService {
       });
     }
 
-    return this.http.get<RMCharacterResponse>(this.BASE_URL, { params });
+    return this.http.get<RMCharacterResponse>(this.BASE_URL, { params }).pipe(
+      switchMap((res) => {
+        const characters = res.results;
+
+        const episodeRequests = characters.map((char) => {
+          const firstUrl = char.episode?.[0];
+          if (!firstUrl) return of(null);
+
+          const id = firstUrl.split('/').pop();
+          return this.http.get<{ name: string }>(`https://rickandmortyapi.com/api/episode/${id}`);
+        });
+
+        return forkJoin(episodeRequests).pipe(
+          map((episodes) => {
+            const enriched = characters.map((char, i) => ({
+              ...char,
+              firstEpisodeName: episodes[i]?.name ?? null,
+            }));
+
+            return {
+              ...res,
+              results: enriched,
+            };
+          }),
+        );
+      }),
+    );
   }
 }

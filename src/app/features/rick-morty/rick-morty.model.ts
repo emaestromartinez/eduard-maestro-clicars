@@ -24,6 +24,9 @@ export interface RMCharacter {
   url: string;
   created: string;
 }
+export interface RMCharacterWithEpisode extends RMCharacter {
+  firstEpisodeName?: string | null;
+}
 
 export interface RMCharacterResponse {
   info: RMInfo;
