@@ -1,33 +1,13 @@
 <main class="page">
-  <!-- LOADING -->
-  @if (loading()) {
-    <div class="page__message">Cargando…</div>
-  }
+  <form
+    [formGroup]="filterForm"
+    (ngSubmit)="applyFilters()"
+    class="filters"
+    role="form"
+    aria-labelledby="filters-title"
+  >
+    <h2 id="filters-title" class="visually-hidden">Filtros de personajes</h2>
 
-  <!-- ERROR -->
-  @if (error()) {
-    <div class="page__message page__message--error">
-      {{ error() }}
-    </div>
-  }
-
-  <!-- GRID y PAGINACIÓN -->
-  @if (!loading() && !error()) {
-    <section class="page__grid-wrapper">
-      <div class="page__grid">
-        <app-character-card *ngFor="let c of characters()" [character]="c"></app-character-card>
-      </div>
-    </section>
-
-    <div class="pagination">
-      <button (click)="prevPage()" [disabled]="globalPage() === 1">Anterior</button>
-      <span>Página {{ globalPage() }} de {{ totalChunks() }}</span>
-      <button (click)="nextPage()" [disabled]="globalPage() === totalChunks()">Siguiente</button>
-    </div>
-  }
-
-  <!-- FORMULARIO DE FILTROS -->
-  <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="filters">
     <div class="filters-group">
       <input id="name" type="text" formControlName="name" placeholder=" " />
       <label for="name">Nombre del personaje</label>
@@ -65,4 +45,43 @@
 
     <button type="submit" class="filters__submit">Filtrar</button>
   </form>
+
+  <!-- LOADING -->
+  @if (loading()) {
+    <div class="page__message" role="status" aria-live="polite">Cargando…</div>
+  }
+
+  <!-- ERROR -->
+  @if (error()) {
+    <div class="page__message page__message--error" role="alert" aria-live="assertive">
+      {{ error() }}
+    </div>
+  }
+
+  <!-- GRID y PAGINACIÓN -->
+  @if (!loading() && !error()) {
+    <section class="page__grid-wrapper" role="region" aria-label="Lista de personajes">
+      <div class="page__grid">
+        <app-character-card
+          *ngFor="let c of characters()"
+          [character]="c"
+          role="listitem"
+        ></app-character-card>
+      </div>
+    </section>
+
+    <div class="pagination">
+      <button (click)="prevPage()" [disabled]="globalPage() === 1" aria-label="Página anterior">
+        Anterior
+      </button>
+      <span aria-live="polite">Página {{ globalPage() }} de {{ totalChunks() }}</span>
+      <button
+        (click)="nextPage()"
+        [disabled]="globalPage() === totalChunks()"
+        aria-label="Página siguiente"
+      >
+        Siguiente
+      </button>
+    </div>
+  }
 </main>

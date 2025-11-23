@@ -2,27 +2,30 @@
   <img class="card__image" [src]="character.image" [alt]="character.name" />
 
   <div class="card__content">
-    <h2 class="card__title">{{ character.name }}</h2>
+    <h2 id="character-{{ character.id }}-name" class="card__title">{{ character.name }}</h2>
 
     <!-- Status -->
-    <div class="card__info-status">
+    <div class="card__info-status" [attr.aria-label]="character.status + ' - ' + character.species">
       <span
         class="card__info-status-indicator"
         [style.background-color]="STATUS_COLOR[character.status]"
         title="{{ character.status }}"
+        aria-hidden="true"
       ></span>
       {{ character.status }} - {{ character.species }}
     </div>
 
-    <!-- Location -->
-    <div class="card__info-block">
-      <span class="card__label">Last Known Location</span>
-      <span class="card__text">{{ character.location.name }}</span>
-    </div>
+    <!-- Location & First Seen -->
+    <dl class="card__info-blocks">
+      <div class="card__info-block">
+        <dt class="card__label">Last Known Location</dt>
+        <dd class="card__text">{{ character.location.name }}</dd>
+      </div>
 
-    <div class="card__info-block">
-      <span class="card__label">First Seen In</span>
-      <span class="card__text">{{ character.firstEpisodeName }}</span>
-    </div>
+      <div class="card__info-block">
+        <dt class="card__label">First Seen In</dt>
+        <dd class="card__text">{{ character.firstEpisodeName }}</dd>
+      </div>
+    </dl>
   </div>
 </div>
