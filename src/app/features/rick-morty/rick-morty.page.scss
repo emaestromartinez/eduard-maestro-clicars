@@ -7,16 +7,50 @@
   min-height: 100vh;
   color: var(--page-text);
 
-  &__grid-wrapper {
+  // VARIABLES (ajustables)
+  $card-w: 400px;
+  $gap: 0.5rem;
+
+  // Breakpoints calculados (usando rem para ser coherente con root font-size)
+  $card-w-rem: calc((#{$card-w} / 1rem) * 1rem); // solo ayuda a lectura
+  $bp-2cols: 880px; // 800 + ~80px de margen
+  $bp-3cols: 1280px; // 1200 + ~80px de margen
+  .page__grid-wrapper {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: center; // centra la grid en la página
+    padding: 1rem 0;
+    box-sizing: border-box;
+
+    /* solo permitimos scroll horizontal cuando la pantalla es < card */
+    overflow-x: auto;
+    scroll-behavior: smooth;
   }
 
-  &__grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
+  .page__grid {
+    display: grid;
+    gap: $gap;
+    justify-content: center; // centra las columnas cuando hay 1 o 2
+    /* Por defecto: 1 columna fija de 400px */
+    grid-template-columns: repeat(1, $card-w);
+  }
+
+  /* 2 columnas cuando hay espacio suficiente */
+  @media (min-width: $bp-2cols) {
+    .page__grid {
+      grid-template-columns: repeat(2, $card-w);
+    }
+  }
+
+  /* 3 columnas cuando hay espacio suficiente */
+  @media (min-width: $bp-3cols) {
+    .page__grid {
+      grid-template-columns: repeat(3, $card-w);
+
+      /* opcional: evitar que la grid crezca más allá del espacio necesario */
+      max-width: calc(3 * #{$card-w} + 2 * #{$gap});
+      width: 100%;
+    }
   }
 
   &__message {
