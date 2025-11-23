@@ -31,9 +31,6 @@ $bp-3cols: 1280px;
   border-radius: $radius;
   box-shadow: $shadow;
   margin-bottom: 2rem;
-  width: 100%;
-  max-width: 900px;
-  align-items: flex-end;
 }
 
 @mixin btn-card(
@@ -100,6 +97,7 @@ $bp-3cols: 1280px;
     text-align: center;
     font-size: 1rem;
     color: var(--card-text);
+    padding-bottom: 1rem;
 
     &--error {
       color: var(--error-color);
@@ -109,7 +107,7 @@ $bp-3cols: 1280px;
   // =======================================================================
   // FILTERS FORM
   // =======================================================================
-  .page__filters {
+  .filters {
     @include form-card;
 
     &-group {

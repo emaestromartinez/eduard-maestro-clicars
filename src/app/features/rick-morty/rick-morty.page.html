@@ -24,35 +24,47 @@
     </ng-template>
   </ng-template>
 
-  <div class="page">
-    <!-- FILTROS -->
-    <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="page__filters">
-      <div class="page__filters-group">
-        <input id="name" type="text" formControlName="name" placeholder=" " />
-        <label for="name">Nombre del personaje</label>
-      </div>
+  <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="filters">
+    <!-- Nombre -->
+    <div class="filters-group">
+      <input id="name" type="text" formControlName="name" placeholder=" " />
+      <label for="name">Nombre del personaje</label>
+    </div>
 
-      <div class="page__filters-group">
-        <select id="status" formControlName="status">
-          <option value="">Todos</option>
-          <option *ngFor="let status of statusOptions" [value]="status">
-            {{ status | titlecase }}
-          </option>
-        </select>
-        <label for="status">Estado</label>
-      </div>
+    <!-- Estado -->
+    <div class="filters-group">
+      <select id="status" formControlName="status">
+        <option value="">Todos</option>
+        <option *ngFor="let status of statusOptions" [value]="status">
+          {{ status | titlecase }}
+        </option>
+      </select>
+      <label for="status">Estado</label>
+    </div>
 
-      <div class="page__filters-group">
-        <select id="gender" formControlName="gender">
-          <option value="">Todos</option>
-          <option *ngFor="let gender of genderOptions" [value]="gender">
-            {{ gender | titlecase }}
-          </option>
-        </select>
-        <label for="gender">Género</label>
-      </div>
+    <!-- Género -->
+    <div class="filters-group">
+      <select id="gender" formControlName="gender">
+        <option value="">Todos</option>
+        <option *ngFor="let gender of genderOptions" [value]="gender">
+          {{ gender | titlecase }}
+        </option>
+      </select>
+      <label for="gender">Género</label>
+    </div>
 
-      <button type="submit" class="page__filters__submit">Filtrar</button>
-    </form>
-  </div>
+    <!-- Especie -->
+    <div class="filters-group">
+      <input id="species" type="text" formControlName="species" placeholder=" " />
+      <label for="species">Especie</label>
+    </div>
+
+    <!-- Tipo -->
+    <div class="filters-group">
+      <input id="type" type="text" formControlName="type" placeholder=" " />
+      <label for="type">Tipo</label>
+    </div>
+
+    <button type="submit" class="filters__submit">Filtrar</button>
+  </form>
 </main>

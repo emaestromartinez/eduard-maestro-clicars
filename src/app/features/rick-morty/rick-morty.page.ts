@@ -45,6 +45,8 @@ export class RickMortyPage {
       name: [''],
       status: [''],
       gender: [''],
+      species: [''],
+      type: [''],
     });
 
     const savedFilters = sessionStorage.getItem('rmFilters');
