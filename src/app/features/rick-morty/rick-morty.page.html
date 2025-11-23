@@ -1,37 +1,38 @@
 <main class="page">
   <!-- LOADING -->
-  <div *ngIf="loading(); else content" class="page__message">Cargando…</div>
+  @if (loading()) {
+    <div class="page__message">Cargando…</div>
+  }
 
-  <ng-template #content>
-    <!-- ERROR -->
-    <div *ngIf="error(); else gridBlock" class="page__message page__message--error">
+  <!-- ERROR -->
+  @if (error()) {
+    <div class="page__message page__message--error">
       {{ error() }}
     </div>
+  }
 
-    <ng-template #gridBlock>
-      <section class="page__grid-wrapper">
-        <div class="page__grid">
-          <app-character-card *ngFor="let c of characters()" [character]="c"> </app-character-card>
-        </div>
-      </section>
-
-      <!-- PAGINACIÓN -->
-      <div class="pagination">
-        <button (click)="prevPage()" [disabled]="globalPage() === 1">Anterior</button>
-        <span>Página {{ globalPage() }} de {{ totalChunks() }}</span>
-        <button (click)="nextPage()" [disabled]="globalPage() === totalChunks()">Siguiente</button>
+  <!-- GRID y PAGINACIÓN -->
+  @if (!loading() && !error()) {
+    <section class="page__grid-wrapper">
+      <div class="page__grid">
+        <app-character-card *ngFor="let c of characters()" [character]="c"></app-character-card>
       </div>
-    </ng-template>
-  </ng-template>
+    </section>
 
+    <div class="pagination">
+      <button (click)="prevPage()" [disabled]="globalPage() === 1">Anterior</button>
+      <span>Página {{ globalPage() }} de {{ totalChunks() }}</span>
+      <button (click)="nextPage()" [disabled]="globalPage() === totalChunks()">Siguiente</button>
+    </div>
+  }
+
+  <!-- FORMULARIO DE FILTROS -->
   <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="filters">
-    <!-- Nombre -->
     <div class="filters-group">
       <input id="name" type="text" formControlName="name" placeholder=" " />
       <label for="name">Nombre del personaje</label>
     </div>
 
-    <!-- Estado -->
     <div class="filters-group">
       <select id="status" formControlName="status">
         <option value="">Todos</option>
@@ -42,7 +43,6 @@
       <label for="status">Estado</label>
     </div>
 
-    <!-- Género -->
     <div class="filters-group">
       <select id="gender" formControlName="gender">
         <option value="">Todos</option>
@@ -53,13 +53,11 @@
       <label for="gender">Género</label>
     </div>
 
-    <!-- Especie -->
     <div class="filters-group">
       <input id="species" type="text" formControlName="species" placeholder=" " />
       <label for="species">Especie</label>
     </div>
 
-    <!-- Tipo -->
     <div class="filters-group">
       <input id="type" type="text" formControlName="type" placeholder=" " />
       <label for="type">Tipo</label>
