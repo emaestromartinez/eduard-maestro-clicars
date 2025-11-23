@@ -1,3 +1,62 @@
+// VARIABLES GLOBALES
+$card-w: 400px;
+$gap: 0.5rem;
+$bp-2cols: 880px;
+$bp-3cols: 1280px;
+
+// MIXINS
+@mixin input-base {
+  padding: 12px;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: var(--input-bg);
+  color: var(--input-text);
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
+
+  &:focus {
+    border-color: var(--btn-primary-bg);
+    box-shadow: 0 0 0 2px rgba(92, 106, 196, 0.2);
+  }
+}
+@mixin form-card($padding: 1.5rem 2rem, $radius: 12px, $shadow: 0 4px 12px var(--form-shadow)) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  background-color: var(--form-bg);
+  padding: $padding;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 900px;
+  align-items: flex-end;
+}
+
+@mixin btn-card(
+  $bg: var(--card-bg),
+  $color: var(--card-text),
+  $radius: 6px,
+  $shadow: 0 2px 6px var(--card-shadow)
+) {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: $radius;
+  background: $bg;
+  color: $color;
+  cursor: pointer;
+  box-shadow: $shadow;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// PAGE LAYOUT
 .page {
   display: flex;
   flex-direction: column;
@@ -7,52 +66,36 @@
   min-height: 100vh;
   color: var(--page-text);
 
-  // VARIABLES (ajustables)
-  $card-w: 400px;
-  $gap: 0.5rem;
-
-  // Breakpoints calculados (usando rem para ser coherente con root font-size)
-  $card-w-rem: calc((#{$card-w} / 1rem) * 1rem); // solo ayuda a lectura
-  $bp-2cols: 880px; // 800 + ~80px de margen
-  $bp-3cols: 1280px; // 1200 + ~80px de margen
+  // GRID WRAPPER
   .page__grid-wrapper {
     width: 100%;
     display: flex;
-    justify-content: center; // centra la grid en la página
+    justify-content: center; // necesario para centrar la grid
     padding: 1rem 0;
     box-sizing: border-box;
-
-    /* solo permitimos scroll horizontal cuando la pantalla es < card */
     overflow-x: auto;
     scroll-behavior: smooth;
   }
 
+  // GRID
   .page__grid {
     display: grid;
     gap: $gap;
-    justify-content: center; // centra las columnas cuando hay 1 o 2
-    /* Por defecto: 1 columna fija de 400px */
+    justify-content: center;
     grid-template-columns: repeat(1, $card-w);
-  }
 
-  /* 2 columnas cuando hay espacio suficiente */
-  @media (min-width: $bp-2cols) {
-    .page__grid {
+    @media (min-width: $bp-2cols) {
       grid-template-columns: repeat(2, $card-w);
     }
-  }
 
-  /* 3 columnas cuando hay espacio suficiente */
-  @media (min-width: $bp-3cols) {
-    .page__grid {
+    @media (min-width: $bp-3cols) {
       grid-template-columns: repeat(3, $card-w);
-
-      /* opcional: evitar que la grid crezca más allá del espacio necesario */
-      max-width: calc(3 * #{$card-w} + 2 * #{$gap});
+      max-width: calc(3 * $card-w + 2 * $gap);
       width: 100%;
     }
   }
 
+  // MESSAGES
   &__message {
     text-align: center;
     font-size: 1rem;
@@ -63,18 +106,11 @@
     }
   }
 
+  // =======================================================================
+  // FILTERS FORM
+  // =======================================================================
   .page__filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    background-color: var(--form-bg);
-    padding: 1.5rem 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px var(--form-shadow);
-    margin-bottom: 2rem;
-    width: 100%;
-    max-width: 900px;
-    align-items: flex-end;
+    @include form-card;
 
     &-group {
       position: relative;
@@ -84,22 +120,7 @@
 
       input,
       select {
-        padding: 12px;
-        border: 1px solid var(--input-border);
-        border-radius: 8px;
-        font-size: 14px;
-        outline: none;
-        background: var(--input-bg);
-        color: var(--input-text);
-        transition:
-          border 0.2s,
-          box-shadow 0.2s;
-      }
-
-      input:focus,
-      select:focus {
-        border-color: var(--btn-primary-bg);
-        box-shadow: 0 0 0 2px rgba(92, 106, 196, 0.2);
+        @include input-base;
       }
 
       label {
@@ -141,29 +162,17 @@
     }
   }
 
-  /* PAGINACIÓN */
+  // PAGINATION
   .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin-top: 2rem;
-    margin-bottom: 0.4rem;
+    margin: 2rem 0 0.4rem;
     color: var(--page-text);
 
     button {
-      padding: 0.4rem 1rem;
-      border: none;
-      border-radius: 6px;
-      background: var(--card-bg);
-      color: var(--card-text);
-      cursor: pointer;
-      box-shadow: 0 2px 6px var(--card-shadow);
-
-      &:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
+      @include btn-card;
     }
   }
 }
