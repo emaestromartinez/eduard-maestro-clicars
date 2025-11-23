@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { forkJoin, map, Observable, switchMap } from 'rxjs';
 import { RMCharacterResponse, RMCharacterWithEpisode } from './rick-morty.model';
 
 @Injectable({ providedIn: 'root' })
@@ -25,19 +25,25 @@ export class RickMortyService {
       switchMap((res) => {
         const characters = res.results;
 
-        const episodeRequests = characters.map((char) => {
-          const firstUrl = char.episode?.[0];
-          if (!firstUrl) return of(null);
+        const firstEpisodes = characters.map((c) => c.episode?.[0]).filter(Boolean) as string[];
+        const uniqueEpisodes = Array.from(new Set(firstEpisodes));
 
-          const id = firstUrl.split('/').pop();
-          return this.http.get<{ name: string }>(`https://rickandmortyapi.com/api/episode/${id}`);
+        const episodeRequests = uniqueEpisodes.map((url) => {
+          const id = url.split('/').pop();
+          return this.http
+            .get<{ name: string }>(`https://rickandmortyapi.com/api/episode/${id}`)
+            .pipe(map((ep) => ({ url, name: ep.name })));
         });
 
         return forkJoin(episodeRequests).pipe(
-          map((episodes) => {
-            const enriched = characters.map((char, i) => ({
+          map((episodesData) => {
+            const episodeMap = new Map(episodesData.map((e) => [e.url, e.name]));
+
+            const enriched = characters.map((char) => ({
               ...char,
-              firstEpisodeName: episodes[i]?.name ?? null,
+              firstEpisodeName: char.episode?.[0]
+                ? (episodeMap.get(char.episode[0]) ?? null)
+                : null,
             }));
 
             return {
