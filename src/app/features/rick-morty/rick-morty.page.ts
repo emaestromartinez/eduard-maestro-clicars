@@ -1,4 +1,4 @@
-import { Component, signal, computed, effect } from '@angular/core';
+import { Component, signal, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
@@ -21,6 +21,9 @@ import { CharacterCardComponent } from './components/character-card/character-ca
   styleUrls: ['./rick-morty.page.scss'],
 })
 export class RickMortyPage {
+  private svc = inject(RickMortyService);
+  private fb = inject(FormBuilder);
+
   apiPage = signal(1);
   subPage = signal(1);
   filters = signal<Record<string, string | null>>({});
@@ -37,10 +40,7 @@ export class RickMortyPage {
   statusOptions = Object.values(RMCharacterStatus);
   genderOptions = Object.values(RMCharacterGender);
 
-  constructor(
-    private svc: RickMortyService,
-    private fb: FormBuilder,
-  ) {
+  constructor() {
     this.filterForm = this.fb.group({
       name: [''],
       status: [''],
