@@ -12,11 +12,12 @@ import {
 } from './rick-morty.model';
 import { RickMortyService } from './rick-morty.service';
 import { CharacterCardComponent } from './components/character-card/character-card.component';
+import { AppHeaderComponent } from '../../shared/components/header/app-header.component';
 
 @Component({
-  selector: 'app-page',
+  selector: 'app-rick-morty-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CharacterCardComponent],
+  imports: [CommonModule, ReactiveFormsModule, CharacterCardComponent, AppHeaderComponent],
   templateUrl: './rick-morty.page.html',
   styleUrls: ['./rick-morty.page.scss'],
 })
